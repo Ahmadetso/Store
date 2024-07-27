@@ -18,6 +18,7 @@ class PublisherFactory extends Factory
     {
         return [
             "name" => fake()->name,
-        ];
+            "address" => fake()->address(),
+               ];
     }
 }

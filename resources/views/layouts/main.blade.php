@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ar" dir="rtl">
 
@@ -22,7 +21,7 @@
     </style>
 
 
-@yield('head')
+    @yield('head')
 
 </head>
 
@@ -37,25 +36,25 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        {{-- <a class="nav-link" href="{{ route('gallery-category') }}"> --}}
-                              {{__('التصنيفات')}}
-                            <i class="bi bi-list"></i>
+                    <li class="nav-item" style="margin-top: 9px;">
+
+                        {{ __('التصنيفات') }}
+                        <i class="bi bi-list"></i>
 
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            {{__('الناشرون')}}
+                            {{ __('الناشرون') }}
                             <i class="bi bi-table"></i>
 
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            {{__('المؤلفون')}}
+                        <a class="nav-link" href="">
+                            {{ __('المؤلفون') }}
                             <i class="bi bi-pen"></i>
 
                         </a>
@@ -63,50 +62,62 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                              {{__('مشترياتي')}}
+                            {{ __('مشترياتي') }}
                             <i class="bi bi-cart"></i>
 
                         </a>
                     </li>
+                    @auth
+                        @if (auth()->user()->isAdmin())
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.index') }}">
+                                    {{ __('إدارة') }}
+                                    <i class="bi bi-gear-wide-connected"></i>
+
+                                </a>
+                            </li>
+                    </ul>
+                    @endif
+                @endauth
                 </ul>
 
                 <ul class="navbar-nav ms-auto">
                     @guest
-                    <li class="nav-item">
-                        <a href="{{route('login')}}" class="nav-link">{{__('تسجيل الدخول')}}</a>
-                    </li>
-                    @if (Route::has('register'))
-                    <li class="nav-item">
-                        <a href="{{route('register')}}" class="nav-link">{{__('انشاء حساب')}}</a>
-                    </li>
-                    @endif
+                        <li class="nav-item">
+                            <a href="{{ route('login') }}" class="nav-link">{{ __('تسجيل الدخول') }}</a>
+                        </li>
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a href="{{ route('register') }}" class="nav-link">{{ __('انشاء حساب') }}</a>
+                            </li>
+                        @endif
                     @else
-                    <li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
 
-                        <a class="nav-link" href="#" id="navbarDropdownMenuAvatar" data-bs-toggle="dropdown">
+                            <a class="nav-link" href="#" id="navbarDropdownMenuAvatar" data-bs-toggle="dropdown">
 
-                            <img src="{{Auth::user()->profile_photo_url}}" class="rounded-circle" height="32"
-                                alt="{{ Auth::user()->name }}" loading="lazy" />
+                                <img src="{{ Auth::user()->profile_photo_url }}" class="rounded-circle" height="32"
+                                    alt="{{ Auth::user()->name }}" loading="lazy" />
 
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
 
-                            <li>
-                                <a class="dropdown-item" href="{{ route('profile.show') }}">
-                                    {{ __('الملف الشخصي') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();document.getElementById('logoutForm').submit();">
-                                    {{ __('تسجيل الخروج') }}
-                                </a>
-                                <form id="logoutForm" method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('profile.show') }}">
+                                        {{ __('الملف الشخصي') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();document.getElementById('logoutForm').submit();">
+                                        {{ __('تسجيل الخروج') }}
+                                    </a>
+                                    <form id="logoutForm" method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
                     @endguest
                 </ul>
             </div>
@@ -122,7 +133,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
-     @yield('scripts')
+    @yield('scripts')
 
 </body>
 

@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
-class categoriesController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @return \Illuminate\Http\Response
      */
-    public function index(Category $category)
+    public function index()
     {
-        $title = 'results for: ' . $category->name;
-        $books = Book::where('category_id', '=' ,  $category->id)->paginate(12);
-        // $books = Book::paginate(12);
-        return view('gallery', compact('books',  'title'));
+        $categories = Category::all();
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -27,7 +25,7 @@ class categoriesController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -38,7 +36,16 @@ class categoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, ['name' => 'required']);
+     
+        $category = new Category;
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->save();
+     
+        session()->flash('flash_message',  'تمت إضافة التصنيف بنجاح');
+     
+        return redirect(route('categories.index'));
     }
 
     /**
@@ -60,7 +67,7 @@ class categoriesController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -72,7 +79,15 @@ class categoriesController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $this->validate($request, ['name' => 'required']);
+     
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->save();
+     
+        session()->flash('flash_message',  'تم تعديل التصنيف بنجاح');
+     
+        return redirect(route('categories.index'));
     }
 
     /**
@@ -83,6 +98,31 @@ class categoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+     
+        session()->flash('flash_message','تم حذف التصنيف بنجاح');
+     
+        return redirect(route('categories.index'));
+    }
+
+    public function result(Category $category)
+    {
+        $books = $category->books()->paginate(12);
+        $title = 'الكتب التابعة لتصنيف: ' . $category->name;
+        return view('gallery', compact('books', 'title'));
+    }
+
+    public function list()
+    {
+        $categories = Category::all()->sortBy('name');
+        $title = 'التصنيفات';
+        return view('categories.index', compact('categories', 'title'));
+    }
+
+    public function search(Request $request)
+    {
+        $categories = Category::where('name', 'like', "%{$request->term}%")->get()->sortBy('name');
+        $title = ' نتائج البحث عن: ' . $request->term;
+        return view('categories.index', compact('categories', 'title'));
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Publisher;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,7 +26,13 @@ class DatabaseSeeder extends Seeder
         //  Publisher::factory(1)->create();
         Author::factory(2)->create();
         // Category::factory(3)->create();
-        Book::factory(10)->create();
+        Book::factory(60)->create();
+        foreach (Author::all() as $auth) {
+            $faker = Faker::create();
+            $books = Book::inRandomOrder()->take(rand(1,7))->pluck('id');
+            $auth->books()->attach($books);
+        }
+
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

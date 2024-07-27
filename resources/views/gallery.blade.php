@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('head')
+
 @endsection
 
 @section('content')
@@ -21,13 +22,13 @@
                 @foreach ($books as $book)
                     <div class="col-md-4">
                         <div class="card">
-                            <img src="{{ asset('storage/' . $book->image) }}" height="290" class="card-img-top"
+                            <img src="{{ asset('storage/' . $book->image) }}" class="card-img-top"
                                 alt="Product Image">
                             <div class="card-body">
-                                <a href="{{ route('book-show', $book) }}">
+                                <a href="{{ route('book.details', $book) }}" class="link-primary" style=" text-decoration: none;">
                                     <h5 class="card-title">{{ $book->title }}</h5>
                                 </a>
-                                <a href="{{ route('gallery-category', $book->category->id) }}">
+                                <a href="{{ route('categories.index', $book->category->id) }}" class="link-secondary">
                                     <p class="card-text">{{ $book->category->name }}</p>
                                 </a>
                                 <div class="d-flex justify-content-between align-items-center">

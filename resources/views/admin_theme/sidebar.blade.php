@@ -1,95 +1,55 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
-      <li class="nav-item">
-        <a class="nav-link" href="../index.html">
-          <i class="mdi mdi-grid-large menu-icon"></i>
-          <span class="menu-title">حيلو</span>
-        </a>
-      </li>
-      <li class="nav-item nav-category">UI Elements</li>
       <li class="nav-item {{ request()->is('admin') ? 'active' : '' }}">
-        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-          <i class="menu-icon mdi mdi-floor-plan"></i>
-          <span class="menu-title">books</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="ui-basic">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="#">edit</a></li>
-            <li class="nav-item"> <a class="nav-link" href="#">delete</a></li>
-            <li class="nav-item"> <a class="nav-link" href="#">add</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-          <i class="menu-icon mdi mdi-card-text-outline"></i>
-          <span class="menu-title">publishers</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="form-elements">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"><a class="nav-link" href="../pages/forms/basic_elements.html">Basic Elements</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-          <i class="menu-icon mdi mdi-chart-line"></i>
-          <span class="menu-title">categories</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="charts">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="../pages/charts/chartjs.html">ChartJs</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
-          <i class="menu-icon mdi mdi-table"></i>
-          <span class="menu-title">authors</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="tables">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="../pages/tables/basic-table.html">Basic table</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
-          <i class="menu-icon mdi mdi-layers-outline"></i>
-          <span class="menu-title">users</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="icons">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="../pages/icons/font-awesome.html">Font Awesome</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-          <i class="menu-icon mdi mdi-account-circle-outline"></i>
-          <span class="menu-title">sold</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="auth">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="../pages/samples/blank-page.html"> Blank Page </a></li>
-            <li class="nav-item"> <a class="nav-link" href="../pages/samples/error-404.html"> 404 </a></li>
-            <li class="nav-item"> <a class="nav-link" href="../pages/samples/error-500.html"> 500 </a></li>
-            <li class="nav-item"> <a class="nav-link" href="../pages/samples/login.html"> Login </a></li>
-            <li class="nav-item"> <a class="nav-link" href="../pages/samples/register.html"> Register </a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="../docs/documentation.html">
-          <i class="menu-icon mdi mdi-file-document"></i>
-          <span class="menu-title">Documentation</span>
+        <a class="nav-link" href = '{{ route('admin.index') }}'>
+            <i class="fa-solid fa-house" style="font-size: 22px;"></i>
+          <span class="menu-title fr" style=" font-size: 13px;"><div style="margin-right: 20px;  ">الصفحة الرئيسية</div></span>
         </a>
       </li>
+      <li class="nav-item nav-category">خيارات</li>
+
+      <li class="nav-item {{ request()->is('admin/books*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('books.index') }}">
+            <i class="fa-solid fa-book" style="font-size: 22px;"></i>
+            <span class="menu-title fr" style="font-size: 13px;"><div style="margin-right: 20px;  ">الكتب</div></span>
+        </a>
+    </li>
+      <li class="nav-item {{ request()->is('admin/categories*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('categories.index') }}">
+            <i class="fa-solid fa-list" style="font-size: 22px;"></i>
+            <span class="menu-title fr" style="  font-size: 13px;"><div style="margin-right: 20px;  ">الاصناف</div></span>
+
+        </a>
+    </li>
+      <li class="nav-item {{ request()->is('admin/publishers*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('publishers.index') }}">
+            <i class="fa-solid fa-building" style="font-size: 22px;"></i>
+
+            <span class="menu-title fr" style=" font-size: 13px;"><div style="margin-right: 20px;  ">الناشرون</div></span>
+        </a>
+    </li>
+      <li class="nav-item {{ request()->is('admin/authors*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('authors.index') }}">
+            <i class="fa-solid fa-pen" style="font-size: 22px;"></i>
+
+            <span class="menu-title fr" style=" font-size: 13px;"><div style="margin-right: 20px;  ">المؤلفون</div></span>
+        </a>
+    </li>
+
+
+      @if(auth()->user()->isSuperAdmin())
+
+
+      <li class="nav-item {{ request()->is('admin/users*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('users.index') }}">
+
+            <i class="fa-solid fa-user "style="font-size: 22px;"></i>
+
+            <span class="menu-title fr " style=" font-size: 13px; "><div style="margin-right: 20px;   ">المستخدمون</div></span>
+        </a>
+    </li>
+      @endif
+
+
     </ul>
   </nav>

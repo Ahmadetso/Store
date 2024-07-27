@@ -1,91 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Author;
 use App\Models\Book;
+use App\Models\Author;
 use App\Models\Category;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
 
 class AdminsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     */
     public function index()
     {
-        $authorsCount = Author::count();
-        $publishersCount = Publisher::count();
-        $categoriesCount = Category::count();
-        $booksCount = Book::count();
-        return view('admin.index', compact(['authorsCount','publishersCount','booksCount','categoriesCount']));
-    }
+        $books_count = Book::count();
+        $cats_count = Category::count();
+        $authors_count = Author::count();
+        $pubs_count = Publisher::count();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return view('admin.index', compact('books_count', 'cats_count', 'authors_count', 'pubs_count'));
     }
 }
