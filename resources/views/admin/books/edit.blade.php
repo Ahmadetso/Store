@@ -43,18 +43,18 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="cover_image" class="col-md-4 col-form-label text-md-right">صورة الكتاب</label>
+                    <label for="image" class="col-md-4 col-form-label text-md-right">صورة الكتاب</label>
 
                     <div class="col-md-6">
-                        <input id="cover_image" accept="image/*" type="file" onchange="readCoverImage(this);" class="form-control @error('cover_image') is-invalid @enderror" name="cover_image" value="{{ old('cover_image') }}" autocomplete="cover_image">
+                        <input id="image" accept="image/*" type="file" onchange="readCoverImage(this);" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" autocomplete="image">
 
-                        @error('cover_image')
+                        @error('image')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
 
-                        <img id="cover-image-thumb" class="img-fluid img-thumbnail" src="{{ asset('storage/' . $book->cover_image) }}">
+                        <img id="cover-image-thumb" class="img-fluid img-thumbnail" src="{{ asset('storage/' . $book->image) }}">
                     </div>
                 </div>
 
@@ -113,12 +113,12 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="description" class="col-md-4 col-form-label text-md-right">الوصف</label>
+                    <label for="body" class="col-md-4 col-form-label text-md-right">الوصف</label>
 
                     <div class="col-md-6">
-                        <textarea id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description') }}" autocomplete="description">{{ $book->description }}</textarea>
+                        <textarea id="body" type="text" class="form-control @error('body') is-invalid @enderror" name="body" value="{{ old('body') }}" autocomplete="body">{{ $book->body }}</textarea>
 
-                        @error('description')
+                        @error('body')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

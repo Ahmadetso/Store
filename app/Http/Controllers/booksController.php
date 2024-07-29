@@ -11,14 +11,14 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
-use App\Traits\ImageUploadTrait;
+use App\Traits\ImageTraits;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
 class BooksController extends Controller
 {
-    use ImageUploadTrait;
+    use ImageTraits;
     /**
      * Display a listing of the resource.
      *
@@ -62,11 +62,14 @@ class BooksController extends Controller
             'number_of_copies' => 'required|numeric|min:1',
             'price' => 'required|numeric|min:0'
         ]);
-        $data['image'] = $this->uploadImage($request->image);
-        // dd($data);
-        $book = Book::create($data);   
-        $book->authors()->attach($request->authors);  
-        session()->flash('flash_message', 'تمت إضافة الكتاب بنجاح');
+        DB::transaction(function () use ($data, &$book, $request) {
+
+            $data['image'] = $this->uploadImage($request->image);
+            // dd($data);
+            $book = Book::create($data);
+            $book->authors()->attach($request->authors);
+        });
+        session()->flash('flash_message', 'Book added succefuly');
         return redirect(route('books.show', $book));
     }
     /**
@@ -100,7 +103,7 @@ class BooksController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        $this->validate($request, [
+        $data = $this->validate($request, [
             'title' => 'required',
             'image' => 'image',
             'category_id' => 'nullable',
@@ -111,38 +114,34 @@ class BooksController extends Controller
             'number_of_pages' => 'numeric|required',
             'number_of_copies' => 'numeric|required',
             'price' => 'numeric|required',
+            'isbn' => [
+                'sometimes',
+                'required',
+                'alpha_num',
+                Rule::unique('books', 'isbn')->ignore($book->id),
+            ],
         ]);
+ 
+        DB::transaction(function () use ($request, $book, $data) {
+            $data = Arr::except($data, ['image', 'authors']);
 
+            if ($request->has('image')) {
+                $this->deleteImage($book->image);
+                $data['image'] = $this->uploadImage($request->image); 
+            }
+            Book::updateOrInsert(
+                ['id' => $book->id],
+                $data
+            );
+            $book->authors()->sync($request->authors);
 
-        $book->title = $request->title;
-        if ($request->has('image')) {
-            Storage::disk('public')->delete($book->image);
-            $book->image = $this->uploadImage($request->image);
-        }
-        $book->isbn = $request->isbn;
-        $book->category_id = $request->category_id;
-        $book->publisher_id = $request->publisher_id;
-        $book->body = $request->body;
-        $book->publish_year = $request->publish_year;
-        $book->number_of_pages = $request->number_of_pages;
-        $book->number_of_copies = $request->number_of_copies;
-        $book->price = $request->price;
-
-        if ($book->isDirty('isbn')) {
-            $this->validate($request, [
-                'isbn' => ['required', 'alpha_num', Rule::unique('books', 'isbn')],
-            ]);
-        }
-
-        $book->save();
-
-        $book->authors()->detach();
-        $book->authors()->attach($request->authors);
-
-        session()->flash('flash_message', 'تم تعديل الكتاب بنجاح');
+            session()->flash('flash_message', 'BOOK EDITED SUCCEFULY');
+        });
 
         return redirect(route('books.show', $book));
     }
+
+
 
     /**
      * Remove the specified resource from storage.

@@ -3,10 +3,11 @@
 namespace App\Traits;
 
 use Exception;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
-trait ImageUploadTrait
+trait ImageTraits
 {
     protected $image_path = "app/public/image/cover";
     protected $img_height = 600;
@@ -28,5 +29,11 @@ trait ImageUploadTrait
     public function imageName($image)
     {
         return time() . '-' . $image->getClientOriginalName();
+    }
+    public function deleteImage(?string $imagePath)
+    {
+        if ($imagePath && Storage::disk('public')->exists($imagePath)) {
+            Storage::disk('public')->delete($imagePath);
+        }
     }
 }
